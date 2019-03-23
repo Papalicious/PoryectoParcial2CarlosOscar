@@ -37,14 +37,15 @@ public class ClientTest implements Runnable{
                 socket = new Socket("192.168.1.70", 8765);
                 InputStream inSocket = socket.getInputStream();
                 OutputStream outSocket = socket.getOutputStream();
-                //estructura de mensaje enviado :
-                // MENSAJE + ID DEL QUE ENVIA + IDCHAT
+                
 
                  String str = myObj.nextLine();
-                //String str = "Hello Server, this is a simple TCP example!";
-                str = str + "%" + "kudos"+"%" + "01" + "%"+"\n";
-                        //if el string que recibes tiene el codigo de tu chat que entre sino que se regrese a escuchar 
-                        //if el id es igual a tu que idga tu si no que diga quien es el que lo envio
+                 String orMsg = str;
+               //estructura de mensaje enviado :
+                // MENSAJE + ID DEL QUE ENVIA + IDCHAT
+               str = str + "%" + "Client"+"%" + "01" + "%"+"\n";
+              // str = "[YOU]:" + str;
+                 System.out.println("[YOU]:"+ orMsg);     
                 byte buffer[] = str.getBytes();
                 outSocket.write(buffer);
                 String outPutLine ="";
@@ -52,15 +53,21 @@ public class ClientTest implements Runnable{
                     outPutLine = outPutLine + (char)character;
                     //System.out.print((char) character);
                 }
+                // ID CHAT + ID DE QUIEN ENVIO + MENSAJE 
+                String[] arrMsg = outPutLine.split("%");
+                System.out.println("["+ arrMsg[1] +"]:"+arrMsg[2]);
                  //INPUT DE COMO REIBE MENSAJE
             // ID CHAT + ID DE QUIEN ENVIO + MENSAJE 
-               // System.out.println("-------------"+outPutLine+"---------------");
-                String[] arrMsg = outPutLine.split("%");
+             
+                
                // System.out.println(arrMsg[1]  + " == " + myUserName);
+               /*  ESTO ES PARA QUE TODOS SEAN SERVIDOR Y MENSAJEROS AL MISMO TIEMPOO////////////
+               String[] arrMsg = outPutLine.split("%");
                 if(arrMsg[1].equals(myUserName))
                     System.out.println("[YOU]:" + arrMsg[2]);
                 else
                     System.out.println("["+arrMsg[1]+"]:" + arrMsg[2]);
+               *//////////////////////////////
                 socket.close();
             }
             //////////////////////////////////////////CIERRA WHILE ESCRITURA////////////////////////////
@@ -76,7 +83,23 @@ public class ClientTest implements Runnable{
     }
     
     public void run(){
-        
+        int character;/*
+        InputStream inSocket = socket.getInputStream();
+        String outPutLine ="";
+                while ((character = inSocket.read()) != -1) {
+                    outPutLine = outPutLine + (char)character;
+                    //System.out.print((char) character);
+                }
+                 //INPUT DE COMO REIBE MENSAJE
+            // ID CHAT + ID DE QUIEN ENVIO + MENSAJE 
+               // System.out.println("-------------"+outPutLine+"---------------");
+                String[] arrMsg = outPutLine.split("%");
+               // System.out.println(arrMsg[1]  + " == " + myUserName);
+                if(arrMsg[1].equals(myUserName))
+                    System.out.println("[YOU]:" + arrMsg[2]);
+                else
+                    System.out.println("["+arrMsg[1]+"]:" + arrMsg[2]);*/
+                
     }
     
 }
