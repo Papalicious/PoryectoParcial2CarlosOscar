@@ -13,6 +13,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -63,7 +64,7 @@ public class ServerApp implements Runnable{
             String instring="";
             int amMsg=0;
             while(a){
-                System.out.println("Waiting for a connection ...");
+                
                 insocket = socket.accept( );
 
                 BufferedReader in = new BufferedReader (new 
@@ -71,16 +72,17 @@ public class ServerApp implements Runnable{
                 PrintWriter out = new PrintWriter (insocket.getOutputStream(), 
                 true);
                 amMsg++;
-                System.out.println(amMsg);
+               
                 instring = in.readLine();
-                System.out.println(instring);
+                String[] arr = instring.split("%");
+                System.out.println("["+arr[1]+"]:"+arr[0]);
                 ServerApp thrd = new ServerApp();
                 thrd.putString(instring);
                 thrd.putinSocket(insocket);
                 Thread t1 = new Thread(thrd);
                 t1.start();
                 }
-            //out.println("The server got: " + instring);
+            
             insocket.close();
         }catch (Exception e) {
             System.out.print(e);
@@ -98,7 +100,17 @@ public class ServerApp implements Runnable{
             String userId = arrMsg[1];
             String chatid = arrMsg[2];
             // System.out.println(message);
-              out.println(chatid+"%"+userId + "%" + arrMsg[0]);
+           Scanner myObj = new Scanner(System.in);
+            String str = myObj.nextLine();
+             System.out.println("[YOU]:"+ str);
+            str =   "01" + "%"+"Server"+"%"+str ;
+              out.println(str);
+              
+              
+              
+          
+              
+              
               Thread.sleep(500);
             insocket.close();
         } catch (Exception e) {
