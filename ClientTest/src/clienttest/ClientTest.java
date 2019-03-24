@@ -5,6 +5,9 @@
  */
 package clienttest;
 
+import java.awt.Button;
+import java.awt.Frame;
+import java.awt.Panel;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
@@ -14,7 +17,7 @@ import java.util.Scanner;
  *
  * @author La Maquina del Tunas
  */
-public class ClientTest implements Runnable{
+public class ClientTest extends Frame implements Runnable {
 
     /**
      * @param args the command line arguments
@@ -22,6 +25,7 @@ public class ClientTest implements Runnable{
     public static String myUserName = "kudoss";
     public static Socket socket=null;
     public static void main(String argv[]){
+      
         try{
             int character;
             
@@ -68,7 +72,7 @@ public class ClientTest implements Runnable{
                 else
                     System.out.println("["+arrMsg[1]+"]:" + arrMsg[2]);
                *//////////////////////////////
-                socket.close();
+               // socket.close();
             }
             //////////////////////////////////////////CIERRA WHILE ESCRITURA////////////////////////////
            
