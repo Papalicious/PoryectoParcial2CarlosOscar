@@ -12,6 +12,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -30,6 +31,8 @@ public class ServerApp implements Runnable{
         public ServerSocket socket;
         public Socket insocket;
         public String message;
+        public static ArrayList<String> users = new ArrayList<String>();
+        public static ArrayList<String> allMsg = new ArrayList<String>();
 // este e sun test del commit
     public static void main(String[] args) {
         // TODO code application logic here
@@ -64,9 +67,9 @@ public class ServerApp implements Runnable{
             String instring="";
             int amMsg=0;
             while(a){
-                
+                System.out.println("Waiting for Instruction...");
                 insocket = socket.accept( );
-
+                System.out.println("Acccepted");
                 BufferedReader in = new BufferedReader (new 
                 InputStreamReader(insocket.getInputStream()));
                 PrintWriter out = new PrintWriter (insocket.getOutputStream(), 
@@ -74,8 +77,9 @@ public class ServerApp implements Runnable{
                 amMsg++;
                
                 instring = in.readLine();
-                String[] arr = instring.split("%");
-                System.out.println("["+arr[1]+"]:"+arr[0]);
+               // String[] arr = instring.split("%");
+                System.out.println(instring);
+                allMsg.add(instring);//esta sera la base de datos con todos los mensajes que hay y habra por haber siempre 
                 ServerApp thrd = new ServerApp();
                 thrd.putString(instring);
                 thrd.putinSocket(insocket);
@@ -97,21 +101,56 @@ public class ServerApp implements Runnable{
             PrintWriter out = new PrintWriter (insocket.getOutputStream(), 
                 true);
             String[] arrMsg = message.split("%");
-            String userId = arrMsg[1];
-            String chatid = arrMsg[2];
-            // System.out.println(message);
-           Scanner myObj = new Scanner(System.in);
-            String str = myObj.nextLine();
-             System.out.println("[YOU]:"+ str);
-            str =   "01" + "%"+"Server"+"%"+str ;
-              out.println(str);
+            if(arrMsg[0].equals("usr"))
+            {
+            //checa lista de users si no existe lo agrega
+            if(users.contains(arrMsg[1])==false)
+            {
+                users.add(arrMsg[1]);
+                //String str =arrMsg[1];
+                System.out.println("Added to users: "+ arrMsg[1]);
+                String str =   "in%" ;
+                out.println(str);
               
+            }else{
+            
+            String str =   "out%" ;
+                out.println(str);
+            }
+            
+            }
+            if(arrMsg[0].equals("msj"))
+            {
+                System.out.println("Server Recieved Message");
+            String str =   "Message Sent!%" ;
+                out.println(str);
+            
+            }
+           if(arrMsg[0].equals("rd"))
+            {
+                String fullJson="";
+                System.out.println("Sending Messages");
+                for(int i =0; i<allMsg.size();i++)
+                {
+                    String cmdNow = allMsg.get(i).split("%")[0];
+                    if(cmdNow.equals("msj"))
+                    {
+                    fullJson = fullJson +allMsg.get(i);
+                    }
+                }
+            String str =   "Sening All Info" ;
+                out.println(fullJson);
+            
+            }
+            // System.out.println(message);
+          
+            
               
               
           
               
               
-              Thread.sleep(500);
+             // Thread.sleep(500);
             insocket.close();
         } catch (Exception e) {
             System.out.print(e);        }

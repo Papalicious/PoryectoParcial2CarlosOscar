@@ -24,12 +24,13 @@ public class ClientTest extends Frame implements Runnable {
      */
     public static String myUserName = "kudoss";
     public static Socket socket=null;
+    public static InputStream inSocket;
     public static void main(String argv[]){
-      
+      //new Thread(new ClientTest()).start();
         try{
             int character;
             
-            //Here the connection is established with the server
+            
             //"127.0.0.1"
             
 
@@ -38,8 +39,8 @@ public class ClientTest extends Frame implements Runnable {
              Scanner myObj = new Scanner(System.in);
             ////////////////////////////////////////////WHILE DE ESCRITURA////////////////////////
             while(a){
-                socket = new Socket("192.168.1.70", 8765);
-                InputStream inSocket = socket.getInputStream();
+                socket = new Socket("10.7.32.69", 8765);
+                inSocket = socket.getInputStream();
                 OutputStream outSocket = socket.getOutputStream();
                 
 
@@ -52,14 +53,15 @@ public class ClientTest extends Frame implements Runnable {
                  System.out.println("[YOU]:"+ orMsg);     
                 byte buffer[] = str.getBytes();
                 outSocket.write(buffer);
-                String outPutLine ="";
-                while ((character = inSocket.read()) != -1) {
-                    outPutLine = outPutLine + (char)character;
-                    //System.out.print((char) character);
-                }
-                // ID CHAT + ID DE QUIEN ENVIO + MENSAJE 
-                String[] arrMsg = outPutLine.split("%");
-                System.out.println("["+ arrMsg[1] +"]:"+arrMsg[2]);
+               new Thread(new ClientTest()).start();
+                                                             /*String outPutLine ="";
+                                                             while ((character = inSocket.read()) != -1) {
+                                                                 outPutLine = outPutLine + (char)character;
+                                                                 //System.out.print((char) character);
+                                                             }
+                                                             // ID CHAT + ID DE QUIEN ENVIO + MENSAJE 
+                                                             String[] arrMsg = outPutLine.split("%");
+                                                             System.out.println("["+ arrMsg[1] +"]:"+arrMsg[2]);*/
                  //INPUT DE COMO REIBE MENSAJE
             // ID CHAT + ID DE QUIEN ENVIO + MENSAJE 
              
@@ -87,7 +89,23 @@ public class ClientTest extends Frame implements Runnable {
     }
     
     public void run(){
-        int character;/*
+        int character;
+        try{
+            while(true){
+        //socket = new Socket("192.168.1.70", 8765);
+                //InputStream inSocket = socket.getInputStream();
+        String outPutLine ="";
+                while ((character = inSocket.read()) != -1) {
+                    outPutLine = outPutLine + (char)character;
+                    //System.out.print((char) character);
+                }
+                // ID CHAT + ID DE QUIEN ENVIO + MENSAJE 
+                String[] arrMsg = outPutLine.split("%");
+                System.out.println("["+ arrMsg[1] +"]:"+arrMsg[2]);
+            }
+                }catch (Exception e) {
+            System.out.print(e);
+        }/*
         InputStream inSocket = socket.getInputStream();
         String outPutLine ="";
                 while ((character = inSocket.read()) != -1) {

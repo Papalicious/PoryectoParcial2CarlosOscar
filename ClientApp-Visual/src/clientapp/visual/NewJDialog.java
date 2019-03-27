@@ -9,20 +9,38 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author La Maquina del Tunas
+ * 
+ * 
+ * CMDS
+ * msj%Mensaje%ID%CHAT
+ * usr%ID
+ * rd%ID
+ * grp%
+ * usrs%
+ * 
  */
-public class NewJDialog extends javax.swing.JDialog {
+public class NewJDialog extends javax.swing.JDialog{
     public static String myUserName = "kudoss";
-    public static Socket socket=null;
+    public static String chatName = "atm";
+
+   // public static ClientAppVisual allMighty= new ClientAppVisual();
+    public int cmd;
     /**
      * Creates new form NewJDialog
      */
     public NewJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+    }
+    public void setCmd(int cmd){
+    this.cmd = cmd;
     }
 
     /**
@@ -38,10 +56,15 @@ public class NewJDialog extends javax.swing.JDialog {
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        jComboBox3 = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jTextField1.setForeground(new java.awt.Color(204, 204, 204));
         jTextField1.setText("Write something..");
 
         jButton1.setText("Send");
@@ -55,75 +78,88 @@ public class NewJDialog extends javax.swing.JDialog {
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
 
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel1.setText("Groups");
+
+        jLabel2.setText("Users");
+
+        jButton2.setText("Enter");
+
+        jButton3.setText("Chat");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 367, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jTextField1))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(156, 156, 156)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(119, 119, 119)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(114, 114, 114)
+                        .addComponent(jLabel2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(99, 99, 99)
+                        .addComponent(jButton2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(98, 98, 98)
+                        .addComponent(jButton3)))
+                .addGap(48, 48, 48)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
                         .addComponent(jButton1)))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(56, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1)
+                        .addGap(39, 39, 39)
+                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton1))
+                    .addComponent(jButton3))
+                .addGap(0, 21, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
-        int character;
-        try{
-        // TODO add your handling code here:
-        socket = new Socket("192.168.1.70", 8765);
-                InputStream inSocket = socket.getInputStream();
-                OutputStream outSocket = socket.getOutputStream();
-         String str = jTextField1.getText();
-                 String orMsg = str;
-               //estructura de mensaje enviado :
-                // MENSAJE + ID DEL QUE ENVIA + IDCHAT
-               str = str + "%" + "Client"+"%" + "01" + "%"+"\n";
-              // str = "[YOU]:" + str;
-                 System.out.println("[YOU]:"+ orMsg);   
-                 jTextArea1.append("[YOU]:"+ orMsg+"\n");
-                byte buffer[] = str.getBytes();
-                outSocket.write(buffer);
-                String outPutLine ="";
-                while ((character = inSocket.read()) != -1) {
-                    outPutLine = outPutLine + (char)character;
-                    //System.out.print((char) character);
-                }
-                // ID CHAT + ID DE QUIEN ENVIO + MENSAJE 
-                String[] arrMsg = outPutLine.split("%");
-                System.out.println("["+ arrMsg[1] +"]:"+arrMsg[2]);
-                jTextArea1.append("["+ arrMsg[1] +"]:"+arrMsg[2]+"\n");
-                 //INPUT DE COMO REIBE MENSAJE
-            // ID CHAT + ID DE QUIEN ENVIO + MENSAJE 
-             
-               // socket.close();
-             }
-        catch(Exception ex){        
-            System.out.println("You must first start the server socket"); 
-            System.out.println("(YourServer.java) at the command prompt.");
-            System.out.println(ex);
-        }   
+         //   jTextArea1.append("[YOU]:"+"\n");
+        int commander =1;
+       ClientAppVisual allMighty= new ClientAppVisual();
+       allMighty.setCmd(commander);//es posible que aqui se tendra que estar creando mas clases en vez de usar la misma siempre
+       allMighty.setJField(jTextField1);
+       allMighty.setJTextArea(jTextArea1);
+       Thread tMsg =  new Thread(allMighty);
+       tMsg.start();
                 
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -131,8 +167,10 @@ public class NewJDialog extends javax.swing.JDialog {
      * @param args the command line arguments
      */
     public static void main(String args[]) throws IOException {
-        socket = new Socket("192.168.1.70", 8765);
-        InputStream inSocket = socket.getInputStream();
+       // socket = new Socket("192.168.1.70", 8765);
+        //inSocket = socket.getInputStream();
+       // outSocket = socket.getOutputStream();
+               
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -155,7 +193,7 @@ public class NewJDialog extends javax.swing.JDialog {
             java.util.logging.Logger.getLogger(NewJDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -169,10 +207,42 @@ public class NewJDialog extends javax.swing.JDialog {
                 dialog.setVisible(true);
             }
         });
+        
+        //ClientAppVisual start = new ClientAppVisual();
+        ClientAppVisual allMighty= new ClientAppVisual();
+          int commander =0,cont=0;
+       allMighty.setCmd(commander);
+        Thread tUsr =  new Thread(allMighty);
+       tUsr.start();
+       long timeStart=0,timeEnd =0,timer=0;
+       while(true){
+           timeStart=System.nanoTime();
+            timeEnd=System.nanoTime();
+            timer+= (timeEnd-timeStart)/100000;
+           
+       if(timer>3){
+       timer=0;
+      // cont++;
+           //System.out.println(cont);
+           allMighty.setCmd(2);/////puede ser que el usar esto igual me puede chingar
+           allMighty.setChat(chatName);
+           //allMighty.setUserName(myUserName);
+        Thread tUpdt =  new Thread(allMighty);
+       tUpdt.start();
+       }
+           
+       }
+         
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> jComboBox3;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
