@@ -22,6 +22,7 @@ import java.util.logging.Logger;
  *
  * @author La Maquina del Tunas
  */
+/////HACE FALTA MANDAR UNA INSTRUCION QUE CREE Y GUARDE LOS DIFERENTES CHATS QUE HAY
 public class ServerApp implements Runnable{
 
     /**

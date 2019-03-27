@@ -27,6 +27,7 @@ public class ClientAppVisual implements Runnable{
      * @param args the command line arguments
      */
     public int cmd;
+    public static String ip="10.7.7.90";
     public static int hasSent=0;
     public static String chatNow;
     public static Socket socket=null;
@@ -53,7 +54,7 @@ public class ClientAppVisual implements Runnable{
     public void run(){
         try {
             if(cmd==0){
-                socket = new Socket("192.168.1.70", 8765);
+                socket = new Socket(ip, 8765);
                 inSocket = socket.getInputStream();
                 OutputStream outSocket = socket.getOutputStream();
                 int character;
@@ -87,7 +88,7 @@ public class ClientAppVisual implements Runnable{
     }
             if(cmd ==1){//send message
             hasSent=1;
-                socket = new Socket("192.168.1.70", 8765);
+                socket = new Socket(ip, 8765);
                 inSocket = socket.getInputStream();
                 OutputStream outSocket = socket.getOutputStream();
                 int character;
@@ -121,7 +122,7 @@ public class ClientAppVisual implements Runnable{
                 ////////////////////////////////////////////PONER UN IF SI NO HA MANDADO NI UN MENSAJE QUE NO PUEDA LEER
                 
                 String chatATM = chatNow;
-                socket = new Socket("192.168.1.70", 8765);
+                socket = new Socket(ip, 8765);
                 inSocket = socket.getInputStream();
                 OutputStream outSocket = socket.getOutputStream();
                 int character;
