@@ -27,7 +27,7 @@ public class ClientAppVisual implements Runnable{
      * @param args the command line arguments
      */
     public int cmd;
-    public static String ip="10.7.7.90";
+    public static String ip="10.7.34.141";
     public static int hasSent=0;
     public static String chatNow;
     public static Socket socket=null;
