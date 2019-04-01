@@ -34,6 +34,7 @@ public class ServerApp implements Runnable{
         public String message;
         public static ArrayList<String> users = new ArrayList<String>();
         public static ArrayList<String> allMsg = new ArrayList<String>();
+        public static ArrayList<String> groups = new ArrayList<String>();
 // este e sun test del commit
     public static void main(String[] args) {
         // TODO code application logic here
@@ -127,7 +128,7 @@ public class ServerApp implements Runnable{
                 out.println(str);
             
             }
-           if(arrMsg[0].equals("rd"))
+           if(arrMsg[0].equals("rd"))//checar  tambien que si es NewGroup que lo cheque 
             {
                 String fullJson="";
                 System.out.println("Sending Messages");
@@ -139,10 +140,40 @@ public class ServerApp implements Runnable{
                     fullJson = fullJson +allMsg.get(i);
                     }
                 }
+                //agregar al final el admin del grupo y si tu eres el admin ya chingaste
+                fullJson = fullJson + "$";
+                for(int i =0; i<allMsg.size();i++)//aqui buscara al admin
+                {
+                    String cmdNow = allMsg.get(i).split("%")[0];
+                    if(cmdNow.equals("newGrp"))
+                    {
+                    fullJson = fullJson +allMsg.get(i);
+                    }
+                }
+                //////////////////////
             String str =   "Sening All Info" ;
                 out.println(fullJson);
             
             }
+           if(arrMsg[0].equals("newGrp")){
+               System.out.println("Server Recieved Group");
+               groups.add(arrMsg[1].split("\\r?\\n")[0]);
+            String str =   "New Group Created!%:" +  arrMsg[1].split("\\r?\\n")[0] + "@";
+                out.println(str);
+               
+           }
+           if(arrMsg[0].equals("rdGrp")){
+               System.out.println("Sending Groups");
+                String str =   "" ;
+               for(int i =0 ; i < groups.size();i++)
+               {
+                   str = str + "%" + groups.get(i);
+               }
+               //groups.add(arrMsg[1]);
+           
+                out.println(str);
+               
+           }
             // System.out.println(message);
           
             
