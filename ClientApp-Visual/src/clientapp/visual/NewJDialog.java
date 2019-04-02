@@ -248,7 +248,7 @@ public class NewJDialog extends javax.swing.JDialog {
         //checar el valor del deste
        //GROUP CHATS
         String selectedItem = (String)jComboBox2.getSelectedItem();
-        chatName = selectedItem;
+        chatName = selectedItem.split("\\r?\\n")[0];
          ClientAppVisual allMighty= new ClientAppVisual();
         allMighty.setCmd(2);/////puede ser que el usar esto igual me puede chingar
         allMighty.setChat(chatName);
@@ -372,7 +372,7 @@ public class NewJDialog extends javax.swing.JDialog {
        
         
        
-       Thread.sleep(5000);
+       Thread.sleep(500);
       // }
            
        }

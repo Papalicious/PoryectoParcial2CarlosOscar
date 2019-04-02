@@ -162,7 +162,9 @@ public class ClientAppVisual implements Runnable{
                 // ID CHAT + ID DE QUIEN ENVIO + MENSAJE 
                 //String[] arrMsg = outPutLine.split("%");
                 System.out.println("Full text: " +outPutLine);
-                String[] twoSections = outPutLine.split("$");
+                String[] twoSections = outPutLine.split("\\$");
+                System.out.println("Section One: " +  twoSections[0]);
+                System.out.println("Section Two: " +  twoSections[1]);
                 String[] admins = twoSections[1].split("@");
                 String[] allMessages = twoSections[0].split("@");
                 System.out.println("Size:" + allMessages.length);
@@ -183,9 +185,12 @@ public class ClientAppVisual implements Runnable{
                     
                     }
                 }
+                if(admins.length>0)
+                System.out.println("Admins: " + admins[0]);
                 for(int i =0; i< admins.length; i++)
                 {
-                      String[] msgNow =allMessages[i].split("%");
+                      String[] msgNow =admins[i].split("%");
+                      System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA: " + admins[i]);
                       if(chatATM.equals(msgNow[1]))
                       {
                          if(myUserName.equals(msgNow[2]))
@@ -195,9 +200,11 @@ public class ClientAppVisual implements Runnable{
                          }
                          else
                          {
+                             
                              isAdmin =0;
-                             jLabel4.setText("Admin: Off");
+                             jLabel4.setText("Admin: Off--");
                          }
+                         //break;
                       
                       }
                 }
