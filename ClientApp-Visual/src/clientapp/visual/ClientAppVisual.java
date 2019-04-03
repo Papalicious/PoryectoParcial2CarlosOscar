@@ -85,6 +85,10 @@ public class ClientAppVisual implements Runnable{
      this.jLabel4 = jLabel4;
      
      }
+     public void setUpdt(javax.swing.JLabel updater)
+     {
+         this.updater = updater;
+     }
     
     
     public void run(){
@@ -191,7 +195,11 @@ public class ClientAppVisual implements Runnable{
                 String[] allMessages = twoSections[0].split("@");
                 System.out.println("Size:" + allMessages.length);
                 if(allMessages.length>amountMes)
+                {   
+                    updater.setText("You might have Recieved new Messages!");
                     amountMes = allMessages.length;
+                }else
+                    updater.setText("");
                 //////////////////////////////////////////////////////////////AQUI VACIAR EL TEXTO QUE HAY Y LLENARLO CON LO NUEVO
                 jTextArea1.setText("");
                 if(allMessages.length>1)
@@ -477,6 +485,6 @@ public class ClientAppVisual implements Runnable{
     public static  javax.swing.JTextField jTextField1;
     public  static  javax.swing.JTextArea jTextArea1;
     public  static  javax.swing.JComboBox jComboBox1,jComboBox2;
-    public  static  javax.swing.JLabel jLabel4;
+    public  static  javax.swing.JLabel jLabel4,updater;
     public  static  javax.swing.JButton addUser,removeUser;
 }
