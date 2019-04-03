@@ -35,6 +35,8 @@ public class ServerApp implements Runnable{
         public static ArrayList<String> users = new ArrayList<String>();
         public static ArrayList<String> allMsg = new ArrayList<String>();
         public static ArrayList<String> groups = new ArrayList<String>();
+        public static ArrayList<String> groupInfo = new ArrayList<String>();
+        
 // este e sun test del commit
     public static void main(String[] args) {
         // TODO code application logic here
@@ -158,6 +160,7 @@ public class ServerApp implements Runnable{
            if(arrMsg[0].equals("newGrp")){
                System.out.println("Server Recieved Group");
                groups.add(arrMsg[1].split("\\r?\\n")[0]);
+               groupInfo.add(arrMsg[1].split("\\r?\\n")[0] + "$"+arrMsg[2]+"$");
             String str =   "New Group Created!%:" +  arrMsg[1].split("\\r?\\n")[0] + "@";
                 out.println(str);
                
@@ -169,9 +172,81 @@ public class ServerApp implements Runnable{
                {
                    str = str + "%" + groups.get(i);
                }
+               str =str +"+" ;
+               for(int i =0 ; i < groupInfo.size();i++)
+               {
+                   str = str + groupInfo.get(i)+"@";
+               }
                //groups.add(arrMsg[1]);
            
                 out.println(str);
+               
+           }
+           if(arrMsg[0].equals("rdUsr")){
+               System.out.println("Sending Users");
+                String str =   "" ;
+               for(int i =0 ; i < users.size();i++)
+               {
+                   str = str + "%" + users.get(i);
+               }
+               //groups.add(arrMsg[1]);
+           
+                out.println(str);//revisar si sirve aun sin endline
+               
+           }
+           if(arrMsg[0].equals("addUsr")){
+               System.out.println("Added User: " + arrMsg[1].split("\\$")[0]);
+                String str =   "Added User: " + arrMsg[1] ;
+                String us = arrMsg[1].split("\\$")[0];
+                String groupName = arrMsg[1].split("\\$")[1].split("\\@")[0];
+                if(groupInfo.size()>0)
+               for(int i =0 ; i < groupInfo.size();i++)
+               {
+                   System.out.println("This is the grpup Info i  got: "+ groupInfo.get(i));
+                  String[] groupie = groupInfo.get(i).split("\\$");
+                  // System.out.println("Groupie Name is : " + groupie[0]);
+                   System.out.println(groupie[0] + " == "+ groupName);
+                  if(groupie[0].equals(groupName))// si el valor de el arraylsit hasta el frente es igual al valor del chat
+                  {
+                    String tmp = groupInfo.get(i);
+                    groupInfo.remove(i);
+                    groupInfo.add(tmp + us +"$");
+                    str = tmp + us +"$";
+                  }
+               }
+               //groups.add(arrMsg[1]);
+           
+                out.println(str);
+               
+           }
+           if(arrMsg[0].equals("remUsr")){
+               System.out.println("Remove User");
+                String str =  "" ;
+                String userToDel = arrMsg[1].split("\\$")[0];
+                 String groupName = arrMsg[1].split("\\$")[1].split("\\@")[0];
+               for(int i =0 ; i < groupInfo.size();i++)
+               {
+                  String[] groupie = groupInfo.get(i).split("\\$");
+                  if(groupie.length>0)
+                  if(groupie[0].equals(groupName))// si el valor de el arraylsit hasta el frente es igual al valor del chat
+                  {
+                      
+                    String tmp = groupie[0] + "$";
+                    groupInfo.remove(i);
+                    for(int x =1;x<groupie.length;x++)
+                    {
+                        if(!groupie[x].equals(userToDel))
+                        {
+                            tmp = tmp + groupie[x] + "$";
+                        }
+                    }
+                    groupInfo.add(tmp);
+                    str = tmp;
+                  }
+               }
+               //groups.add(arrMsg[1]);
+           
+                out.println("Deletion ended this: "+str);
                
            }
             // System.out.println(message);

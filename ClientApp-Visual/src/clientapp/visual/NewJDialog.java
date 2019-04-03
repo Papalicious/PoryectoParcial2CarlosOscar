@@ -28,7 +28,7 @@ import java.util.logging.Logger;
  */
 public class NewJDialog extends javax.swing.JDialog {
     public static String myUserName = "Kablam";
-    public static String chatName = "atm";
+    public static String chatName = "Kablam";
 
    // public static ClientAppVisual allMighty= new ClientAppVisual();
     public int cmd;
@@ -69,6 +69,8 @@ public class NewJDialog extends javax.swing.JDialog {
         jSeparator2 = new javax.swing.JSeparator();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -128,6 +130,21 @@ public class NewJDialog extends javax.swing.JDialog {
 
         jLabel4.setText("Admin : Off");
 
+        jButton6.setText("Remove");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        jButton7.setText("Update");
+        jButton7.setActionCommand("Update");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -146,17 +163,11 @@ public class NewJDialog extends javax.swing.JDialog {
                                 .addGap(41, 41, 41)
                                 .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(39, 39, 39)
-                                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGap(95, 95, 95)
                                 .addComponent(jButton5))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(113, 113, 113)
                                 .addComponent(jLabel2))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(103, 103, 103)
-                                .addComponent(jButton3))
                             .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -173,7 +184,18 @@ public class NewJDialog extends javax.swing.JDialog {
                                 .addGap(96, 96, 96)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel4)
-                                    .addComponent(jButton2))))
+                                    .addComponent(jButton2)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(63, 63, 63)
+                                .addComponent(jButton3)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton6))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(43, 43, 43)
+                                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(90, 90, 90)
+                                .addComponent(jButton7)))
                         .addGap(12, 12, 12)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1)
@@ -202,11 +224,15 @@ public class NewJDialog extends javax.swing.JDialog {
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton3)
+                            .addComponent(jButton6))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -239,6 +265,9 @@ public class NewJDialog extends javax.swing.JDialog {
        allMighty.setJTextArea(jTextArea1);
        allMighty.setJComboBox(jComboBox2);
        allMighty.setAdminLabel(jLabel4);
+       allMighty.setJComboBoxUsr(jComboBox3);
+       allMighty.setBtnAdd(jButton3);
+       allMighty.setBtnRem(jButton6);
        Thread tMsg =  new Thread(allMighty);
        tMsg.start();
                 
@@ -260,18 +289,19 @@ public class NewJDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-       //PRIVATE CHATS
-        /*String selectedItem = (String)jComboBox3.getSelectedItem();
-        chatName = selectedItem;
+       //PRIVATE CHATS ADD SOMEONE
+        //System.out.println("Add User But");
+        String selectedItem = (String)jComboBox3.getSelectedItem();
+        String userToAdd = selectedItem.split("\\r?\\n")[0];
+       // System.out.println("User to add: "+ userToAdd + "@");
          ClientAppVisual allMighty= new ClientAppVisual();
-        allMighty.setCmd(2);/////puede ser que el usar esto igual me puede chingar
-        allMighty.setChat(chatName);
+        allMighty.setCmd(6);/////puede ser que el usar esto igual me puede chingar
+        allMighty.setUsrAdd(userToAdd);
+       // allMighty.setChat(chatName);
            //allMighty.setUserName(myUserName);
-        Thread tUpdt =  new Thread(allMighty);
-        tUpdt.start();
-        System.out.println(selectedItem);
-*/
-        // TODO add your handling code here:
+        Thread tAdd =  new Thread(allMighty);
+        tAdd.start();
+       
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -296,6 +326,32 @@ public class NewJDialog extends javax.swing.JDialog {
         Thread tUpdtGrp =  new Thread(grpCheck);
         tUpdtGrp.start();
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+        //update de users
+        ClientAppVisual usrCheck= new ClientAppVisual();
+         usrCheck.setCmd(5);/////read groups
+        
+        //allMighty.setChat(chatName);
+        Thread tUpdtGrp =  new Thread(usrCheck);
+        tUpdtGrp.start();
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        //remover de users
+        String selectedItem = (String)jComboBox3.getSelectedItem();
+        //System.out.println("Selected to Delete"+  selectedItem);
+        String userToRem = selectedItem.split("\\r?\\n")[0];
+         ClientAppVisual allMighty= new ClientAppVisual();
+        allMighty.setCmd(7);/////puede ser que el usar esto igual me puede chingar
+        allMighty.setUsrRem(userToRem);
+       // allMighty.setChat(chatName);
+           //allMighty.setUserName(myUserName);
+        Thread tUpdt =  new Thread(allMighty);
+        tUpdt.start();
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -372,7 +428,7 @@ public class NewJDialog extends javax.swing.JDialog {
        
         
        
-       Thread.sleep(500);
+       Thread.sleep(5000);
       // }
            
        }
@@ -386,6 +442,8 @@ public class NewJDialog extends javax.swing.JDialog {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;

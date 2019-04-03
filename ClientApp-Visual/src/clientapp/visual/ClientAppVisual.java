@@ -27,7 +27,8 @@ public class ClientAppVisual implements Runnable{
      * @param args the command line arguments
      */
     public int cmd;
-    public static String ip="10.7.41.243";
+    public static int amountMes=0;
+    public static String ip="192.168.1.70";
     public static int isAdmin =0;
     public static int hasSent=0;
     public static String chatNow;
@@ -36,12 +37,33 @@ public class ClientAppVisual implements Runnable{
     public static OutputStream outSocket;
     public static String myUserName;
     public String newChat;
+    public String adder,remover;
     public void setCmd(int cmd){
     this.cmd = cmd;
+    }
+    public void setBtnAdd(javax.swing.JButton  addUser)
+    {
+        this.addUser = addUser;
+    }
+    public void setUsrAdd(String adder)
+    {
+        this.adder = adder;
+    }
+    public void setUsrRem(String remover)
+    {
+        this.remover = remover;
+    }
+    public void setBtnRem(javax.swing.JButton  removeUser)
+    {
+        this.removeUser = removeUser;
     }
     public void setJComboBox(javax.swing.JComboBox  jComboBox1 )
     {
         this.jComboBox1 = jComboBox1;
+    }
+    public void setJComboBoxUsr(javax.swing.JComboBox  jComboBox2 )
+    {
+        this.jComboBox2 = jComboBox2;
     }
     public void setNewChat(String newChat){
     this.newChat = newChat;
@@ -168,10 +190,12 @@ public class ClientAppVisual implements Runnable{
                 String[] admins = twoSections[1].split("@");
                 String[] allMessages = twoSections[0].split("@");
                 System.out.println("Size:" + allMessages.length);
+                if(allMessages.length>amountMes)
+                    amountMes = allMessages.length;
                 //////////////////////////////////////////////////////////////AQUI VACIAR EL TEXTO QUE HAY Y LLENARLO CON LO NUEVO
                 jTextArea1.setText("");
                 if(allMessages.length>1)
-                for(int i=0; i<allMessages.length-1;i++)
+                for(int i=0; i<allMessages.length;i++)
                 {
                     //if con su nomre ha de tener nuevos mensajes
                     System.out.println(allMessages[i]);
@@ -186,8 +210,8 @@ public class ClientAppVisual implements Runnable{
                     }
                 }
                 if(admins.length>0)
-                System.out.println("Admins: " + admins[0]);
-                for(int i =0; i< admins.length; i++)
+                //System.out.println("Admins: " + admins[0]);
+                for(int i =0; i< admins.length-1; i++)
                 {
                       String[] msgNow =admins[i].split("%");
                       System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA: " + admins[i]);
@@ -197,12 +221,16 @@ public class ClientAppVisual implements Runnable{
                          {
                          isAdmin =1;
                          jLabel4.setText("Admin: On");
+                         addUser.setEnabled(true);
+                         removeUser.setEnabled(true);
                          }
                          else
                          {
                              
                              isAdmin =0;
-                             jLabel4.setText("Admin: Off--");
+                             jLabel4.setText("Admin: Off");
+                             addUser.setEnabled(false);
+                             removeUser.setEnabled(false);
                          }
                          //break;
                       
@@ -277,7 +305,10 @@ public class ClientAppVisual implements Runnable{
                 // ID CHAT + ID DE QUIEN ENVIO + MENSAJE 
                 //String[] arrMsg = outPutLine.split("%");
                 System.out.println("Full text: " +outPutLine);
-                String[] allGroups = outPutLine.split("%");
+//                aqui va cuando separa por grupos y a parte por su info
+                String[] twoParts=outPutLine.split("\\+");
+                String[] allGroups = twoParts[0].split("\\%");
+                String[] allInfo = twoParts[1].split("\\@");
                 System.out.println("Size:" + allGroups.length);
                 //////////////////////////////////////////////////////////////AQUI VACIAR EL TEXTO QUE HAY Y LLENARLO CON LO NUEVO
                 if(allGroups.length>=1)
@@ -291,7 +322,21 @@ public class ClientAppVisual implements Runnable{
                     //if con su nomre ha de tener nuevos mensajes
                     System.out.println(allGroups[i]);
                     //String[] msgNow =allMessages[i].split("%");
-                    jComboBox1.addItem(allGroups[i]);
+                    String grpName = allGroups[i];
+                    for(int x=0;x<allInfo.length;x++)
+                    {
+                        String[] infoPerGroup = allInfo[x].split("\\$");
+                        if(grpName.equals(infoPerGroup[0]))
+                        {
+                            for(int j =1;j<infoPerGroup.length;j++)
+                            {
+                                if(myUserName.equals(infoPerGroup[j]))
+                                    jComboBox1.addItem(allGroups[i]);
+                            }
+                        }
+                    
+                    }
+                    //jComboBox1.addItem(allGroups[i]);
                    
                     
                     
@@ -301,6 +346,115 @@ public class ClientAppVisual implements Runnable{
             
             
             }
+            if(cmd ==5){//send message
+                ////////////////////////////////////////////PONER UN IF SI NO HA MANDADO NI UN MENSAJE QUE NO PUEDA LEER
+                
+                String chatATM = chatNow;
+                socket = new Socket(ip, 8765);
+                inSocket = socket.getInputStream();
+                OutputStream outSocket = socket.getOutputStream();
+                int character;
+               
+                //System.out.println("Write Your Username to Start: ");
+               
+                 String str ="";
+                
+               //estructura de mensaje enviado :
+                // MENSAJE + ID DEL QUE ENVIA + IDCHAT
+                 str = "rdUsr%@\n";
+              // str = "[YOU]:" + str;
+                     
+                byte buffer[] = str.getBytes();
+                outSocket.write(buffer);
+                
+                
+                String outPutLine ="";
+                while ((character = inSocket.read()) != -1) {
+                    outPutLine = outPutLine + (char)character;
+                    //System.out.print((char) character);
+                }
+                // ID CHAT + ID DE QUIEN ENVIO + MENSAJE 
+                //String[] arrMsg = outPutLine.split("%");
+                System.out.println("Full text: " +outPutLine);
+                String[] allUsers = outPutLine.split("%");
+                System.out.println("Size:" + allUsers.length);
+                //////////////////////////////////////////////////////////////AQUI VACIAR EL TEXTO QUE HAY Y LLENARLO CON LO NUEVO
+                if(allUsers.length>=1)
+                jComboBox2.removeAllItems();//Agregar aqui el jCombo que es
+               //// jComboBox1.addItem("Kablam");
+                //jComboBox1.addItem("Asupesa");
+
+                if(allUsers.length>=1)
+                for(int i=1; i<allUsers.length;i++)
+                {
+                    //if con su nomre ha de tener nuevos mensajes
+                    System.out.println(allUsers[i]);
+                    //String[] msgNow =allMessages[i].split("%");
+                    jComboBox2.addItem(allUsers[i]);
+                   
+                    
+                    
+                }
+                
+                
+               // System.out.println("["+ arrMsg[1] +"]:"+arrMsg[2]);
+               
+            
+            
+            }
+            if(cmd ==6){//
+               
+                
+                String chatATM = chatNow;
+                socket = new Socket(ip, 8765);
+                inSocket = socket.getInputStream();
+                OutputStream outSocket = socket.getOutputStream();
+                int character;
+                String str ="";
+            
+                 str = "addUsr%"+adder+"$"+chatATM+"@\n";
+                 System.out.println("Enviare al que agregare");
+                byte buffer[] = str.getBytes();
+                outSocket.write(buffer);
+                
+                
+                String outPutLine ="";
+                while ((character = inSocket.read()) != -1) {
+                    outPutLine = outPutLine + (char)character;
+                    //System.out.print((char) character);
+                }
+               
+                System.out.println(outPutLine);
+             
+            
+            }
+            if(cmd ==7){//
+               
+                
+                String chatATM = chatNow;
+                socket = new Socket(ip, 8765);
+                inSocket = socket.getInputStream();
+                OutputStream outSocket = socket.getOutputStream();
+                int character;
+                String str ="";
+                System.out.println("Cmd to remover: "+ remover);
+                 str = "remUsr%"+remover+"$"+chatATM+"@\n";
+                 
+                byte buffer[] = str.getBytes();
+                outSocket.write(buffer);
+                
+                
+                String outPutLine ="";
+                while ((character = inSocket.read()) != -1) {
+                    outPutLine = outPutLine + (char)character;
+                    //System.out.print((char) character);
+                }
+               
+                System.out.println("Removed And Done: "+outPutLine);
+             
+            
+            }
+            
             /*
             int character;
            // socket = new Socket("192.168.1.70", 8765);
@@ -322,6 +476,7 @@ public class ClientAppVisual implements Runnable{
     }
     public static  javax.swing.JTextField jTextField1;
     public  static  javax.swing.JTextArea jTextArea1;
-    public  static  javax.swing.JComboBox jComboBox1;
+    public  static  javax.swing.JComboBox jComboBox1,jComboBox2;
     public  static  javax.swing.JLabel jLabel4;
+    public  static  javax.swing.JButton addUser,removeUser;
 }
